@@ -1,6 +1,8 @@
 package org.example;
 
 import com.microsoft.playwright.*;
+
+import java.lang.annotation.ElementType;
 import java.nio.file.Paths;
 
 
@@ -11,15 +13,24 @@ public class Main {
             Page page = browser.newPage();
             page.navigate("https://demoqa.com/automation-practice-form");
 
-            page.getByPlaceholder("First Name").fill("Marat");
-            page.getByPlaceholder("Last Name").fill("Mkhitaryan");
-            page.getByPlaceholder("name@example.com").fill("marat@mkhitaryan.pw");
+            Object borderColor = null;
+            for (Locator element : page.locator("input").all()) {
+                // getComputedStyle(document.querySelector("#userEmail")).getPropertyValue("border-color")
+                // String ElementType = element.getAttribute("type");
 
-            page.getByText("Male", new Page.GetByTextOptions().setExact(true)).click();
+                borderColor = element.first().evaluate("el => getComputedStyle(el).getPropertyValue(\"border-color\")");
+                String test = (String) borderColor;
 
-
-
-
+                switch (test) {
+                    case ("rgb(40, 167, 69)"):
+                        System.out.println("Gut");
+                    case ("rgb(220, 53, 69)"):
+                        System.out.println("Bad");
+                    case ("rgb(51, 51, 51)"):
+                        System.out.println("Neutral");
+                }
+            }
+                
             page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("example.png")));
         }
     }
