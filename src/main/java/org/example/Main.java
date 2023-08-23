@@ -28,6 +28,8 @@ public class Main {
                         System.out.println("Bad");
                     case ("rgb(51, 51, 51)"):
                         System.out.println("Neutral");
+                    default:
+                        System.out.println(test);
                 }
             }
                 
